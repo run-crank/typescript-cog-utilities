@@ -321,4 +321,58 @@ describe('testing assert function', () => {
       });
     });
   });
+  describe('testing matches and does not match operators', () => {
+    describe('matches', () => {
+      test('compare matches email regex with an email should return true', () => {
+        const operator = 'matches';
+        const actualValue = 'test@test.com';
+        const value = '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$';
+        expect(assert(operator, actualValue, value, field).valid).toBe(true);
+      });
+      test('compare matches email regex with an non email string should return false', () => {
+        const operator = 'matches';
+        const actualValue = 'testtest';
+        const value = '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$';
+        expect(assert(operator, actualValue, value, field).valid).toBe(false);
+      });
+      test('compare matches strong password regex with a strong password should return true', () => {
+        const operator = 'matches';
+        const actualValue = 'Password123!@#';
+        const value = '^(?=.*([A-Z]){1,})(?=.*[~!@#$%^&*_+=`|\(){}[:;\"\'<>,.?/-]{1,})(?=.*[0-9]{1,})(?=.*[a-z]{1,}).{8,100}$';
+        expect(assert(operator, actualValue, value, field).valid).toBe(true);
+      });
+      test('compare matches strong password with an weak password should return false', () => {
+        const operator = 'matches';
+        const actualValue = 'aaaaaaaaaaaaa';
+        const value = '^(?=.*([A-Z]){1,})(?=.*[~!@#$%^&*_+=`|\(){}[:;\"\'<>,.?/-]{1,})(?=.*[0-9]{1,})(?=.*[a-z]{1,}).{8,100}$';
+        expect(assert(operator, actualValue, value, field).valid).toBe(false);
+      });
+    });
+    describe('does not match', () => {
+      test('compare does not match email regex with a non email string should return true', () => {
+        const operator = 'does not match';
+        const actualValue = 'testtest';
+        const value = '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$';
+        expect(assert(operator, actualValue, value, field).valid).toBe(true);
+      });
+      test('compare does not match email regex with an email should return false', () => {
+        const operator = 'does not match';
+        const actualValue = 'test@test.com';
+        const value = '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$';
+        expect(assert(operator, actualValue, value, field).valid).toBe(false);
+      });
+      test('compare does not match strong password regex with a weak password should return true', () => {
+        const operator = 'does not match';
+        const actualValue = 'aaaaaaaaaaaaaaaa';
+        const value = '^(?=.*([A-Z]){1,})(?=.*[~!@#$%^&*_+=`|\(){}[:;\"\'<>,.?/-]{1,})(?=.*[0-9]{1,})(?=.*[a-z]{1,}).{8,100}$';
+        expect(assert(operator, actualValue, value, field).valid).toBe(true);
+      });
+      test('compare does not match strong password with an strong password should return false', () => {
+        const operator = 'does not match';
+        const actualValue = 'Password123!@#';
+        const value = '^(?=.*([A-Z]){1,})(?=.*[~!@#$%^&*_+=`|\(){}[:;\"\'<>,.?/-]{1,})(?=.*[0-9]{1,})(?=.*[a-z]{1,}).{8,100}$';
+        expect(assert(operator, actualValue, value, field).valid).toBe(false);
+      });
+    });
+  });
 });
