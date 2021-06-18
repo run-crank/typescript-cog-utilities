@@ -1,6 +1,7 @@
 import { UnknownOperatorError, InvalidOperandError } from '../constants/errors';
 import * as moment from 'moment';
 import { parse as parseCsvString } from 'csv-string';
+import { validOperators } from '../constants/valid-operators';
 
 export const operatorFailMessages: any = {
   'be': 'Expected %s field to be %s, but it was actually %s',
@@ -13,6 +14,8 @@ export const operatorFailMessages: any = {
   'not be set': 'Expected %s field not to be set, but it was actually set to %s',
   'be one of': 'Expected %s field to be one of these values (%s), but it was actually %s',
   'not be one of': 'Expected %s field to not be one of these values (%s), but it was actually %s',
+  'matches': 'Expected %s field to match the pattern %s, but it does not',
+  'does not match': 'Expected %s field not to match the pattern %s, but it does',
 };
 
 export const operatorSuccessMessages: any = {
@@ -26,10 +29,11 @@ export const operatorSuccessMessages: any = {
   'not be set': '%s field was not set, as expected',
   'be one of': '%s field was set to one of these values (%s), as expected',
   'not be one of': '%s field was not set to one of these values (%s), as expected',
+  'matches': 'The %s field matches the pattern %s, as expected',
+  'does not match': 'The %s field does not match the pattern %s, as expected',
 };
 
 export function compare(operator: string, actualValue: any, value: string = null) {
-  const validOperators = ['be', 'not be', 'contain', 'not contain', 'be greater than', 'be less than', 'be set', 'not be set', 'be one of', 'not be one of'];
   const dateTimeFormat = /\d{4}-\d{2}-\d{2}(?:.?\d{2}:\d{2}:\d{2})?/;
 
   operator = operator || '';
@@ -73,6 +77,12 @@ export function compare(operator: string, actualValue: any, value: string = null
       return !parseCsvString(value)[0]
         .map(v => v.trim())
         .includes(actualValue.trim());
+    } else if (operator.toLowerCase() == 'matches') {
+      const regex = new RegExp(value);
+      return regex.test(actualValue);
+    } else if (operator.toLowerCase() == 'does not match') {
+      const regex = new RegExp(value);
+      return !regex.test(actualValue);
     }
   } else {
     throw new UnknownOperatorError(operator);
