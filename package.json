@@ -63,9 +63,5 @@
     "ts-node": "^7.0.1",
     "tslint": "^5.10.0",
     "typescript": "^3.0.0"
-  },
-  "directories": {
-    "test": "tests"
-  },
-  "author": "Angelito Salud"
+  }
 }
