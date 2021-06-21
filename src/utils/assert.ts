@@ -65,11 +65,11 @@ const COMPARERS: Record<string, (actual: any, expected: any) => boolean> = {
     !parseCsvString(expected)[0]
       .map(v => v.trim())
       .includes(actual.trim()),
-  'matches': (actual: any, expected: any) => {
+  'match': (actual: any, expected: any) => {
     const regex = new RegExp(expected);
     return regex.test(actual);
   },
-  'does not match': (actual: any, expected: any) => {
+  'not match': (actual: any, expected: any) => {
     const regex = new RegExp(expected);
     return !regex.test(actual);
   },
@@ -86,8 +86,8 @@ const FAIL_MESSAGES: Record<string, (actual: any, expected: any, field: string) 
   'not be set': (actual: any, expected: any, field: string) => `Expected ${field} field not to be set, but it was actually set to ${actual}`,
   'be one of': (actual: any, expected: any, field: string) => `Expected ${field} field to be one of these values (${expected}), but it was actually ${actual}`,
   'not be one of': (actual: any, expected: any, field: string) => `Expected ${field} field to not be one of these values (${expected}), but it was actually ${actual}`,
-  'matches': (actual: any, expected: any, field: string) => `Expected ${field} field to match the pattern ${expected}, but it does not`,
-  'does not match': (actual: any, expected: any, field: string) => `Expected ${field} field not to match the pattern ${expected}, but it does`,
+  'match': (actual: any, expected: any, field: string) => `Expected ${field} field to match the pattern ${expected}, but it does not`,
+  'not match': (actual: any, expected: any, field: string) => `Expected ${field} field not to match the pattern ${expected}, but it does`,
 };
 
 const SUCCESS_MESSAGES: Record<string, (expected: any, field: string) => string> = {
@@ -101,8 +101,8 @@ const SUCCESS_MESSAGES: Record<string, (expected: any, field: string) => string>
   'not be set': (expected: any, field: string) => `${field} field was not set, as expected`,
   'be one of': (expected: any, field: string) => `${field} field was set to one of these values (${expected}), as expected`,
   'not be one of': (expected: any, field: string) => `${field} field was not set to one of these values (${expected}), as expected`,
-  'matches': (expected: any, field: string) => `The ${field} field matches the pattern ${expected}, as expected`,
-  'does not match': (expected: any, field: string) => `The ${field} field does not match the pattern ${expected}, as expected`,
+  'match': (expected: any, field: string) => `The ${field} field matches the pattern ${expected}, as expected`,
+  'not match': (expected: any, field: string) => `The ${field} field does not match the pattern ${expected}, as expected`,
 };
 
 export function assert(operator: string, actualValue: any, expectedValue: any, field: string): AssertionResult {
