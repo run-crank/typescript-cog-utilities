@@ -14,8 +14,8 @@ export const operatorFailMessages: any = {
   'not be set': 'Expected %s field not to be set, but it was actually set to %s',
   'be one of': 'Expected %s field to be one of these values (%s), but it was actually %s',
   'not be one of': 'Expected %s field to not be one of these values (%s), but it was actually %s',
-  'matches': 'Expected %s field to match the pattern %s, but it does not',
-  'does not match': 'Expected %s field not to match the pattern %s, but it does',
+  'match': 'Expected %s field to match the pattern %s, but it does not',
+  'not match': 'Expected %s field not to match the pattern %s, but it does',
 };
 
 export const operatorSuccessMessages: any = {
@@ -29,8 +29,8 @@ export const operatorSuccessMessages: any = {
   'not be set': '%s field was not set, as expected',
   'be one of': '%s field was set to one of these values (%s), as expected',
   'not be one of': '%s field was not set to one of these values (%s), as expected',
-  'matches': 'The %s field matches the pattern %s, as expected',
-  'does not match': 'The %s field does not match the pattern %s, as expected',
+  'match': 'The %s field matches the pattern %s, as expected',
+  'not match': 'The %s field does not match the pattern %s, as expected',
 };
 
 export function compare(operator: string, actualValue: any, value: string = null) {
@@ -77,10 +77,10 @@ export function compare(operator: string, actualValue: any, value: string = null
       return !parseCsvString(value)[0]
         .map(v => v.trim())
         .includes(actualValue.trim());
-    } else if (operator.toLowerCase() == 'matches') {
+    } else if (operator.toLowerCase() == 'match') {
       const regex = new RegExp(value);
       return regex.test(actualValue);
-    } else if (operator.toLowerCase() == 'does not match') {
+    } else if (operator.toLowerCase() == 'not match') {
       const regex = new RegExp(value);
       return !regex.test(actualValue);
     }
