@@ -12,10 +12,15 @@ export interface AssertionResult {
 
 const VALID_OPERATORS = validOperators;
 const DATE_TIME_FORMAT = /\d{4}-\d{2}-\d{2}(?:.?\d{2}:\d{2}:\d{2})?/;
+const DATE_FORMAT = /^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$/;
 const EMAIL_FORMAT = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 const COMPARERS: Record<string, (actual: any, expected: any) => boolean> = {
   'be': (actual: any, expected: any) => {
+    if ((DATE_TIME_FORMAT.test(actual) && DATE_TIME_FORMAT.test(expected)) && (DATE_FORMAT.test(actual) || DATE_FORMAT.test(expected))) {
+      actual = actual.toString().slice(0, 10);
+      expected = expected.toString().slice(0, 10);
+    }
     if (EMAIL_FORMAT.test(String(actual).toLowerCase()) && EMAIL_FORMAT.test(String(expected).toLowerCase())) {
       actual = actual.toString().toLowerCase();
       expected = expected.toString().toLowerCase();
@@ -23,6 +28,10 @@ const COMPARERS: Record<string, (actual: any, expected: any) => boolean> = {
     return actual == expected;
   },
   'not be': (actual: any, expected: any) => {
+    if ((DATE_TIME_FORMAT.test(actual) && DATE_TIME_FORMAT.test(expected)) && (DATE_FORMAT.test(actual) || DATE_FORMAT.test(expected))) {
+      actual = actual.toString().slice(0, 10);
+      expected = expected.toString().slice(0, 10);
+    }
     if (EMAIL_FORMAT.test(String(actual).toLowerCase()) && EMAIL_FORMAT.test(String(expected).toLowerCase())) {
       actual = actual.toString().toLowerCase();
       expected = expected.toString().toLowerCase();
