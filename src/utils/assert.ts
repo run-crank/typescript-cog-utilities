@@ -99,19 +99,19 @@ const FAIL_MESSAGES: Record<string, (actual: any, expected: any, field: string) 
   'not match': (actual: any, expected: any, field: string) => `Expected ${field} field not to match the pattern ${expected}, but it does`,
 };
 
-const SUCCESS_MESSAGES: Record<string, (expected: any, field: string) => string> = {
-  'be': (expected: any, field: string) => `The ${field} field was set to ${expected}, as expected`,
-  'not be': (expected: any, field: string) => `The ${field} field was not set to ${expected}, as expected`,
-  'contain': (expected: any, field: string) => `The ${field} field contains ${expected}, as expected`,
-  'not contain': (expected: any, field: string) => `The ${field} field does not contain ${expected}, as expected`,
-  'be greater than': (expected: any, field: string) => `The ${field} field was greater than ${expected}, as expected`,
-  'be less than': (expected: any, field: string) => `The ${field} field was less than ${expected}, as expected`,
-  'be set': (expected: any, field: string) => `${field} field was set, as expected`,
-  'not be set': (expected: any, field: string) => `${field} field was not set, as expected`,
-  'be one of': (expected: any, field: string) => `${field} field was set to one of these values (${expected}), as expected`,
-  'not be one of': (expected: any, field: string) => `${field} field was not set to one of these values (${expected}), as expected`,
-  'match': (expected: any, field: string) => `The ${field} field matches the pattern ${expected}, as expected`,
-  'not match': (expected: any, field: string) => `The ${field} field does not match the pattern ${expected}, as expected`,
+const SUCCESS_MESSAGES: Record<string, (expected: any, field: string, actual: any) => string> = {
+  'be': (expected: any, field: string, actual: any) => `The ${field} field was set to ${expected}, as expected`,
+  'not be': (expected: any, field: string, actual: any) => `The ${field} field was not set to ${expected}, as expected. The actual value is ${actual}`,
+  'contain': (expected: any, field: string, actual: any) => `The ${field} field contains ${expected}, as expected. The actual value is ${actual}`,
+  'not contain': (expected: any, field: string, actual: any) => `The ${field} field does not contain ${expected}, as expected. The actual value is ${actual}`,
+  'be greater than': (expected: any, field: string, actual: any) => `The ${field} field was greater than ${expected}, as expected. The actual value is ${actual}`,
+  'be less than': (expected: any, field: string, actual: any) => `The ${field} field was less than ${expected}, as expected. The actual value is ${actual}`,
+  'be set': (expected: any, field: string, actual: any) => `${field} field was set, as expected. The actual value is ${actual}`,
+  'not be set': (expected: any, field: string, actual: any) => `${field} field was not set, as expected`,
+  'be one of': (expected: any, field: string, actual: any) => `${field} field was set to one of these values (${expected}), as expected. The actual value is ${actual}`,
+  'not be one of': (expected: any, field: string, actual: any) => `${field} field was not set to one of these values (${expected}), as expected. The actual value is ${actual}`,
+  'match': (expected: any, field: string, actual: any) => `The ${field} field matches the pattern ${expected}, as expected. The actual value is ${actual}`,
+  'not match': (expected: any, field: string, actual: any) => `The ${field} field does not match the pattern ${expected}, as expected. The actual value is ${actual}`,
 };
 
 export function assert(operator: string, actualValue: any, expectedValue: any, field: string): AssertionResult {
@@ -129,7 +129,7 @@ export function assert(operator: string, actualValue: any, expectedValue: any, f
   };
 
   result.valid = COMPARERS[operator](actualValue, expectedValue);
-  result.message = result.valid ? SUCCESS_MESSAGES[operator](expectedValue, field) : FAIL_MESSAGES[operator](actualValue, expectedValue, field);
+  result.message = result.valid ? SUCCESS_MESSAGES[operator](expectedValue, field, actualValue) : FAIL_MESSAGES[operator](actualValue, expectedValue, field);
 
   return result;
 }

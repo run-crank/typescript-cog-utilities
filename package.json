@@ -1,6 +1,6 @@
 {
   "name": "@run-crank/utilities",
-  "version": "0.4.4",
+  "version": "0.4.6",
   "description": "Utility methods and functionality to be shared across all Cogs written in Typescript.",
   "homepage": "https://github.com/run-crank/typescript-cog-utilities#readme",
   "main": "dist/src/index.js",
