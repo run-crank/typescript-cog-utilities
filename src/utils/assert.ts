@@ -17,7 +17,7 @@ const EMAIL_FORMAT = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+")
 
 const COMPARERS: Record<string, (actual: any, expected: any) => boolean> = {
   'be': (actual: any, expected: any) => {
-    if ((DATE_TIME_FORMAT.test(actual) && DATE_TIME_FORMAT.test(expected)) && (DATE_FORMAT.test(actual) || DATE_FORMAT.test(expected))) {
+    if (DATE_TIME_FORMAT.test(actual) && DATE_TIME_FORMAT.test(expected) && (DATE_FORMAT.test(actual) || DATE_FORMAT.test(expected))) {
       actual = actual.toString().slice(0, 10);
       expected = expected.toString().slice(0, 10);
     }
@@ -28,7 +28,7 @@ const COMPARERS: Record<string, (actual: any, expected: any) => boolean> = {
     return actual == expected;
   },
   'not be': (actual: any, expected: any) => {
-    if ((DATE_TIME_FORMAT.test(actual) && DATE_TIME_FORMAT.test(expected)) && (DATE_FORMAT.test(actual) || DATE_FORMAT.test(expected))) {
+    if (DATE_TIME_FORMAT.test(actual) && DATE_TIME_FORMAT.test(expected) && (DATE_FORMAT.test(actual) || DATE_FORMAT.test(expected))) {
       actual = actual.toString().slice(0, 10);
       expected = expected.toString().slice(0, 10);
     }
@@ -95,8 +95,8 @@ const FAIL_MESSAGES: Record<string, (actual: any, expected: any, field: string) 
   'not be set': (actual: any, expected: any, field: string) => `Expected ${field} field not to be set, but it was actually set to ${actual}`,
   'be one of': (actual: any, expected: any, field: string) => `Expected ${field} field to be one of these values (${expected}), but it was actually ${actual}`,
   'not be one of': (actual: any, expected: any, field: string) => `Expected ${field} field to not be one of these values (${expected}), but it was actually ${actual}`,
-  'match': (actual: any, expected: any, field: string) => `Expected ${field} field to match the pattern ${expected}, but it does not`,
-  'not match': (actual: any, expected: any, field: string) => `Expected ${field} field not to match the pattern ${expected}, but it does`,
+  'match': (actual: any, expected: any, field: string) => `Expected ${field} field to match the pattern ${expected}, but it does not. The actual value is ${actual}`,
+  'not match': (actual: any, expected: any, field: string) => `Expected ${field} field not to match the pattern ${expected}, but it does. The actual value is ${actual}`,
 };
 
 const SUCCESS_MESSAGES: Record<string, (expected: any, field: string, actual: any) => string> = {
