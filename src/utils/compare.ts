@@ -4,33 +4,33 @@ import { parse as parseCsvString } from 'csv-string';
 import { validOperators } from '../constants/valid-operators';
 
 export const operatorFailMessages: any = {
-  'be': 'Expected %s field to be %s, but it was actually %s',
-  'not be': 'Expected %s field not to be %s, but it was also %s',
-  'contain': 'Expected %s field to contain %s, but it is not contained in %s',
-  'not contain': 'Expected %s field not to contain %s, but it is contained in %s',
-  'be greater than': '%s field is expected to be greater than %s, but its value was %s',
-  'be less than': '%s field is expected to be less than %s, but its value was %s',
+  'be': 'Expected %s field to be "%s", but it was actually "%s"',
+  'not be': 'Expected %s field not to be "%s", but it was also "%s"',
+  'contain': 'Expected %s field to contain "%s", but it is not contained in "%s"',
+  'not contain': 'Expected %s field not to contain "%s", but it is contained in "%s"',
+  'be greater than': '%s field is expected to be greater than "%s", but its value was "%s"',
+  'be less than': '%s field is expected to be less than "%s", but its value was "%s"',
   'be set': 'Expected %s field to be set, but it was not',
-  'not be set': 'Expected %s field not to be set, but it was actually set to %s',
-  'be one of': 'Expected %s field to be one of these values (%s), but it was actually %s',
-  'not be one of': 'Expected %s field to not be one of these values (%s), but it was actually %s',
-  'match': 'Expected %s field to match the pattern %s, but it does not',
-  'not match': 'Expected %s field not to match the pattern %s, but it does',
+  'not be set': 'Expected %s field not to be set, but it was actually set to "%s"',
+  'be one of': 'Expected %s field to be one of these values (%s), but it was actually "%s"',
+  'not be one of': 'Expected %s field to not be one of these values (%s), but it was actually "%s"',
+  'match': 'Expected %s field to match the pattern "%s", but it does not',
+  'not match': 'Expected %s field not to match the pattern "%s", but it does',
 };
 
 export const operatorSuccessMessages: any = {
-  'be': 'The %s field was set to %s, as expected',
-  'not be': 'The %s field was not set to %s, as expected',
-  'contain': 'The %s field contains %s, as expected',
-  'not contain': 'The %s field does not contain %s, as expected',
-  'be greater than': 'The %s field was greater than %s, as expected',
-  'be less than': 'The %s field was less than %s, as expected',
+  'be': 'The %s field was set to "%s", as expected',
+  'not be': 'The %s field was not set to "%s", as expected',
+  'contain': 'The %s field contains "%s", as expected',
+  'not contain': 'The %s field does not contain "%s", as expected',
+  'be greater than': 'The %s field was greater than "%s", as expected',
+  'be less than': 'The %s field was less than "%s", as expected',
   'be set': '%s field was set, as expected',
   'not be set': '%s field was not set, as expected',
   'be one of': '%s field was set to one of these values (%s), as expected',
   'not be one of': '%s field was not set to one of these values (%s), as expected',
-  'match': 'The %s field matches the pattern %s, as expected',
-  'not match': 'The %s field does not match the pattern %s, as expected',
+  'match': 'The %s field matches the pattern "%s", as expected',
+  'not match': 'The %s field does not match the pattern "%s", as expected',
 };
 
 export function compare(operator: string, actualValue: any, value: string = null) {
