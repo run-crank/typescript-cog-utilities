@@ -84,7 +84,7 @@ const COMPARERS: Record<string, (actual: any, expected: any) => boolean> = {
   },
 };
 
-const piiRedactedMessage = 'PII removed';
+const piiRedactedMessage = 'PII REDACTED';
 
 const FAIL_MESSAGES: Record<string, (actual: any, expected: any, field: string, piiLevel: string) => string> = {
   'be': (actual: any, expected: any, field: string, piiLevel: string = null) => `Expected ${field} field to be "${expected}", but it was actually "${piiLevel ? piiRedactedMessage : actual}"`,
