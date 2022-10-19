@@ -84,37 +84,56 @@ const COMPARERS: Record<string, (actual: any, expected: any) => boolean> = {
   },
 };
 
-const FAIL_MESSAGES: Record<string, (actual: any, expected: any, field: string) => string> = {
-  'be': (actual: any, expected: any, field: string) => `Expected ${field} field to be "${expected}", but it was actually "${actual}"`,
-  'not be': (actual: any, expected: any, field: string) => `Expected ${field} field not to be "${expected}", but it was also "${actual}"`,
-  'contain': (actual: any, expected: any, field: string) => `Expected ${field} field to contain "${expected}", but it is not contained in "${actual}"`,
-  'not contain': (actual: any, expected: any, field: string) => `Expected ${field} field not to contain "${expected}", but it is contained in "${actual}"`,
-  'be greater than': (actual: any, expected: any, field: string) => `${field} field is expected to be greater than "${expected}", but its value was "${actual}"`,
-  'be less than': (actual: any, expected: any, field: string) => `${field} field is expected to be less than "${expected}", but its value was "${actual}"`,
-  'be set': (actual: any, expected: any, field: string) => `Expected ${field} field to be set, but it was not`,
-  'not be set': (actual: any, expected: any, field: string) => `Expected ${field} field not to be set, but it was actually set to "${actual}"`,
-  'be one of': (actual: any, expected: any, field: string) => `Expected ${field} field to be one of these values ("${expected}"), but it was actually "${actual}"`,
-  'not be one of': (actual: any, expected: any, field: string) => `Expected ${field} field to not be one of these values ("${expected}"), but it was actually "${actual}"`,
-  'match': (actual: any, expected: any, field: string) => `Expected ${field} field to match the pattern "${expected}", but it does not. The actual value is "${actual}"`,
-  'not match': (actual: any, expected: any, field: string) => `Expected ${field} field not to match the pattern "${expected}", but it does. The actual value is "${actual}"`,
+const piiRedactedMessage = 'PII removed';
+
+const FAIL_MESSAGES: Record<string, (actual: any, expected: any, field: string, piiLevel: string) => string> = {
+  'be': (actual: any, expected: any, field: string, piiLevel: string = null) => `Expected ${field} field to be "${expected}", but it was actually "${piiLevel ? piiRedactedMessage : actual}"`,
+  'not be': (actual: any, expected: any, field: string, piiLevel: string = null) => `Expected ${field} field not to be "${expected}", but it was also "${piiLevel ? piiRedactedMessage : actual}"`,
+  'contain': (actual: any, expected: any, field: string, piiLevel: string = null) =>
+    `Expected ${field} field to contain "${expected}", but it is not contained in "${piiLevel ? piiRedactedMessage : actual}"`,
+  'not contain': (actual: any, expected: any, field: string, piiLevel: string = null) =>
+    `Expected ${field} field not to contain "${expected}", but it is contained in "${piiLevel ? piiRedactedMessage : actual}"`,
+  'be greater than': (actual: any, expected: any, field: string, piiLevel: string = null) =>
+    `${field} field is expected to be greater than "${expected}", but its value was "${piiLevel ? piiRedactedMessage : actual}"`,
+  'be less than': (actual: any, expected: any, field: string, piiLevel: string = null) =>
+    `${field} field is expected to be less than "${expected}", but its value was "${piiLevel ? piiRedactedMessage : actual}"`,
+  'be set': (actual: any, expected: any, field: string, piiLevel: string = null) => `Expected ${field} field to be set, but it was not`,
+  'not be set': (actual: any, expected: any, field: string, piiLevel: string = null) => `Expected ${field} field not to be set, but it was actually set to "${piiLevel ? piiRedactedMessage : actual}"`,
+  'be one of': (actual: any, expected: any, field: string, piiLevel: string = null) =>
+    `Expected ${field} field to be one of these values ("${expected}"), but it was actually "${piiLevel ? piiRedactedMessage : actual}"`,
+  'not be one of': (actual: any, expected: any, field: string, piiLevel: string = null) =>
+    `Expected ${field} field to not be one of these values ("${expected}"), but it was actually "${piiLevel ? piiRedactedMessage : actual}"`,
+  'match': (actual: any, expected: any, field: string, piiLevel: string = null) =>
+    `Expected ${field} field to match the pattern "${expected}", but it does not. The actual value is "${piiLevel ? piiRedactedMessage : actual}"`,
+  'not match': (actual: any, expected: any, field: string, piiLevel: string = null) =>
+    `Expected ${field} field not to match the pattern "${expected}", but it does. The actual value is "${piiLevel ? piiRedactedMessage : actual}"`,
 };
 
-const SUCCESS_MESSAGES: Record<string, (expected: any, field: string, actual: any) => string> = {
-  'be': (expected: any, field: string, actual: any) => `The ${field} field was set to "${expected}", as expected`,
-  'not be': (expected: any, field: string, actual: any) => `The ${field} field was not set to "${expected}", as expected. The actual value is "${actual}"`,
-  'contain': (expected: any, field: string, actual: any) => `The ${field} field contains "${expected}", as expected. The actual value is "${actual}"`,
-  'not contain': (expected: any, field: string, actual: any) => `The ${field} field does not contain "${expected}", as expected. The actual value is "${actual}"`,
-  'be greater than': (expected: any, field: string, actual: any) => `The ${field} field was greater than "${expected}", as expected. The actual value is "${actual}"`,
-  'be less than': (expected: any, field: string, actual: any) => `The ${field} field was less than "${expected}", as expected. The actual value is "${actual}"`,
-  'be set': (expected: any, field: string, actual: any) => `${field} field was set, as expected. The actual value is "${actual}"`,
-  'not be set': (expected: any, field: string, actual: any) => `${field} field was not set, as expected`,
-  'be one of': (expected: any, field: string, actual: any) => `${field} field was set to one of these values ("${expected}"), as expected. The actual value is "${actual}"`,
-  'not be one of': (expected: any, field: string, actual: any) => `${field} field was not set to one of these values ("${expected}"), as expected. The actual value is "${actual}"`,
-  'match': (expected: any, field: string, actual: any) => `The ${field} field matches the pattern "${expected}", as expected. The actual value is "${actual}"`,
-  'not match': (expected: any, field: string, actual: any) => `The ${field} field does not match the pattern "${expected}", as expected. The actual value is "${actual}"`,
+const SUCCESS_MESSAGES: Record<string, (expected: any, field: string, actual: any, piiLevel: string) => string> = {
+  'be': (expected: any, field: string, actual: any, piiLevel: string = null) => `The ${field} field was set to "${expected}", as expected`,
+  'not be': (expected: any, field: string, actual: any, piiLevel: string = null) =>
+    `The ${field} field was not set to "${expected}", as expected. The actual value is "${piiLevel ? piiRedactedMessage : actual}"`,
+  'contain': (expected: any, field: string, actual: any, piiLevel: string = null) =>
+    `The ${field} field contains "${expected}", as expected. The actual value is "${piiLevel ? piiRedactedMessage : actual}"`,
+  'not contain': (expected: any, field: string, actual: any, piiLevel: string = null) =>
+    `The ${field} field does not contain "${expected}", as expected. The actual value is "${piiLevel ? piiRedactedMessage : actual}"`,
+  'be greater than': (expected: any, field: string, actual: any, piiLevel: string = null) =>
+    `The ${field} field was greater than "${expected}", as expected. The actual value is "${piiLevel ? piiRedactedMessage : actual}"`,
+  'be less than': (expected: any, field: string, actual: any, piiLevel: string = null) =>
+    `The ${field} field was less than "${expected}", as expected. The actual value is "${piiLevel ? piiRedactedMessage : actual}"`,
+  'be set': (expected: any, field: string, actual: any, piiLevel: string = null) => `${field} field was set, as expected. The actual value is "${piiLevel ? piiRedactedMessage : actual}"`,
+  'not be set': (expected: any, field: string, actual: any, piiLevel: string = null) => `${field} field was not set, as expected`,
+  'be one of': (expected: any, field: string, actual: any, piiLevel: string = null) =>
+    `${field} field was set to one of these values ("${expected}"), as expected. The actual value is "${piiLevel ? piiRedactedMessage : actual}"`,
+  'not be one of': (expected: any, field: string, actual: any, piiLevel: string = null) =>
+    `${field} field was not set to one of these values ("${expected}"), as expected. The actual value is "${piiLevel ? piiRedactedMessage : actual}"`,
+  'match': (expected: any, field: string, actual: any, piiLevel: string = null) =>
+    `The ${field} field matches the pattern "${expected}", as expected. The actual value is "${piiLevel ? piiRedactedMessage : actual}"`,
+  'not match': (expected: any, field: string, actual: any, piiLevel: string = null) =>
+    `The ${field} field does not match the pattern "${expected}", as expected. The actual value is "${piiLevel ? piiRedactedMessage : actual}"`,
 };
 
-export function assert(operator: string, actualValue: any, expectedValue: any, field: string): AssertionResult {
+export function assert(operator: string, actualValue: any, expectedValue: any, field: string, piiLevel: string = null): AssertionResult {
   operator = operator ? operator.toLowerCase().trim() : '';
   actualValue = stringifyValue(actualValue);
   expectedValue = stringifyValue(expectedValue);
@@ -129,7 +148,7 @@ export function assert(operator: string, actualValue: any, expectedValue: any, f
   };
 
   result.valid = COMPARERS[operator](actualValue, expectedValue);
-  result.message = result.valid ? SUCCESS_MESSAGES[operator](expectedValue, field, actualValue) : FAIL_MESSAGES[operator](actualValue, expectedValue, field);
+  result.message = result.valid ? SUCCESS_MESSAGES[operator](expectedValue, field, actualValue, piiLevel) : FAIL_MESSAGES[operator](actualValue, expectedValue, field, piiLevel);
 
   return result;
 }
