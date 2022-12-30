@@ -42,7 +42,7 @@ const COMPARERS: Record<string, (actual: any, expected: any) => boolean> = {
   'not contain': (actual: any, expected: any) => !actual.toLowerCase().includes(expected.toLowerCase()),
   'be greater than': (actual: any, expected: any) => {
     if (DATE_TIME_FORMAT.test(actual) && DATE_TIME_FORMAT.test(expected)) {
-      return moment(actual).isAfter(expected);
+      return moment(actual.trim()).isAfter(expected.trim());
     } else if (!isNaN(Number(actual)) && !isNaN(Number(expected))) {
       return parseFloat(actual) > parseFloat(expected);
     } else {
@@ -51,7 +51,7 @@ const COMPARERS: Record<string, (actual: any, expected: any) => boolean> = {
   },
   'be less than': (actual: any, expected: any) => {
     if (DATE_TIME_FORMAT.test(actual) && DATE_TIME_FORMAT.test(expected)) {
-      return moment(actual).isBefore(expected);
+      return moment(actual.trim()).isBefore(expected.trim());
     } else if (!isNaN(Number(actual)) && !isNaN(Number(expected))) {
       return parseFloat(actual) < parseFloat(expected);
     } else {
